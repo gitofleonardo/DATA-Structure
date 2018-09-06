@@ -1,0 +1,63 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Node{
+	int data;
+	Node *nextNode;
+};
+
+Node *nodeHead1 = NULL ;
+Node *nodeHead2 = NULL ;
+
+void integerate();
+
+int main() {
+	for (int i = 9; i>=0; i--) {
+		Node *tempNodeHead = nodeHead1;
+		Node *node = (Node *)malloc(sizeof(Node));
+		node->data = i * (2 + i);
+		node->nextNode = nodeHead1;
+		nodeHead1 = node;
+	}
+
+	for (int i = 8; i>=0; i--) {
+		Node *tempNodeHead = nodeHead2;
+		Node *node = (Node *)malloc(sizeof(Node));
+		node->data = i * (1 + i);
+		node->nextNode = nodeHead2;
+		nodeHead2 = node;
+	}
+
+	for (Node *tempNode = nodeHead1; tempNode != NULL; tempNode = tempNode->nextNode) {
+		printf("%d ", tempNode->data);
+	}
+	printf("\n");
+	for (Node *tempNode = nodeHead2; tempNode != NULL; tempNode = tempNode->nextNode) {
+		printf("%d ", tempNode->data);
+	}
+	printf("\n");
+	integerate();
+	for (Node *tempNode = nodeHead1; tempNode != NULL; tempNode = tempNode->nextNode) {
+		printf("%d ", tempNode->data);
+	}
+	system("pause");
+	return 0;
+}
+
+void integerate() {
+	Node *tempHead1;
+	Node *tempHead2;
+	Node *temp;
+	for (tempHead1 = nodeHead1,tempHead2=nodeHead2; tempHead1 != NULL && tempHead2!=NULL; tempHead1 = tempHead1->nextNode) {
+		if (tempHead1->data<=tempHead2->data && tempHead1->nextNode != NULL && tempHead1->nextNode->data>=tempHead2->data) {
+			temp = tempHead2->nextNode;
+			tempHead2->nextNode = tempHead1->nextNode;
+			tempHead1->nextNode = tempHead2;
+			tempHead2 = temp;
+		}
+		if (tempHead1->nextNode == NULL && tempHead2!=NULL) {
+			tempHead1->nextNode = tempHead2;
+			break;
+		}
+	}
+}
